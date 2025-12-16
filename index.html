@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בית הדין לקטנוניות | The Royal Court of Pettiness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+        import { getAuth, signInAnonymously, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRR-PMlAz_hVzLQJ4jl37F3QDa_pxS830",
+            authDomain: "royal-court-pettiness.firebaseapp.com",
+            projectId: "royal-court-pettiness",
+            storageBucket: "royal-court-pettiness.firebasestorage.app",
+            messagingSenderId: "570213664438",
+            appId: "1:570213664438:web:79a460121596a491c2c817"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+        window.firebaseGoogleProvider = googleProvider;
+        window.firebaseSignInAnonymously = signInAnonymously;
+        window.firebaseSignInWithPopup = signInWithPopup;
+        window.firebaseCreateUserWithEmailAndPassword = createUserWithEmailAndPassword;
+        window.firebaseSignInWithEmailAndPassword = signInWithEmailAndPassword;
+        window.firebaseOnAuthStateChanged = onAuthStateChanged;
+        window.firebaseSignOut = signOut;
+        window.firebaseDoc = doc;
+        window.firebaseGetDoc = getDoc;
+        window.firebaseSetDoc = setDoc;
+        window.firebaseUpdateDoc = updateDoc;
+        window.firebaseIncrement = increment;
+        window.dispatchEvent(new Event('firebase-ready'));
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-navy': '#1a1f3a',
+                        'royal-navy-light': '#2a3154',
+                        'royal-gold': '#d4a853',
+                        'royal-gold-light': '#e8c97a',
+                        'royal-gold-dark': '#b8923d',
+                        'royal-cream': '#f5f0e6',
+                        'royal-cream-dark': '#e8e0d0',
+                        'royal-red': '#8b2635',
+                        'royal-green': '#2d5a3d',
+                    },
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Assistant', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Assistant', sans-serif; background: linear-gradient(135deg, #1a1f3a 0%, #2a3154 50%, #1a1f3a 100%); min-height: 100vh; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .paper-bg { background: linear-gradient(to bottom, #f5f0e6 0%, #e8e0d0 100%); }
+        .royal-border { border: 3px solid #d4a853; box-shadow: inset 0 0 0 1px #1a1f3a, inset 0 0 0 4px #d4a853, inset 0 0 0 5px #1a1f3a, 0 10px 40px rgba(0,0,0,0.3); }
+        .gauge-container { position: relative; width: 180px; height: 100px; overflow: hidden; }
+        .gauge-bg { position: absolute; width: 180px; height: 180px; border-radius: 50%; background: conic-gradient(from 180deg, #2d5a3d 0deg, #4a7c4e 30deg, #d4a853 60deg, #e8c97a 90deg, #d4a853 120deg, #8b2635 150deg, #6d1f2a 180deg); clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%); transform: rotate(180deg); }
+        .gauge-center { position: absolute; width: 140px; height: 140px; background: #f5f0e6; border-radius: 50%; top: 20px; left: 20px; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .gauge-needle { position: absolute; width: 4px; height: 70px; background: linear-gradient(to top, #1a1f3a 0%, #8b2635 100%); bottom: 0; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); border-radius: 2px; transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .gauge-needle::after { content: ''; position: absolute; width: 16px; height: 16px; background: #1a1f3a; border: 3px solid #d4a853; border-radius: 50%; bottom: -8px; left: 50%; transform: translateX(-50%); }
+        .verdict-stamp { position: absolute; top: 20px; left: 20px; width: 100px; height: 100px; border: 4px solid #8b2635; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #8b2635; font-weight: bold; font-size: 14px; text-align: center; transform: rotate(-15deg); opacity: 0; }
+        .verdict-stamp.show { animation: stamp 0.5s ease-out forwards; animation-delay: 1s; }
+        @keyframes stamp { 0% { transform: scale(2) rotate(-15deg); opacity: 0; } 50% { transform: scale(1.1) rotate(-15deg); opacity: 0.8; } 100% { transform: scale(1) rotate(-15deg); opacity: 1; } }
+        .modal-backdrop { backdrop-filter: blur(4px); }
+        .wax-seal { width: 60px; height: 60px; background: radial-gradient(circle at 30% 30%, #c94a4a 0%, #8b2635 50%, #6d1f2a 100%); border-radius: 50%; box-shadow: inset 0 -3px 6px rgba(0,0,0,0.3), inset 0 3px 6px rgba(255,255,255,0.2), 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; }
+        .corner-decoration { position: absolute; width: 60px; height: 60px; border: 3px solid #d4a853; }
+        .corner-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+        .corner-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+        .corner-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+        .royal-input:focus { outline: none; border-color: #d4a853; box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.2); }
+        .royal-btn { transition: all 0.3s ease; }
+        .royal-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212, 168, 83, 0.4); }
+        .premium-glow { animation: premiumGlow 2s infinite; }
+        @keyframes premiumGlow { 0%, 100% { text-shadow: 0 0 5px #d4a853, 0 0 10px #d4a853; } 50% { text-shadow: 0 0 10px #d4a853, 0 0 20px #d4a853, 0 0 30px #d4a853; } }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        .animate-slide-up { animation: slideUp 0.6s ease-out; }
+        .animate-slide-down { animation: slideDown 0.4s ease-out; }
+        .animate-scale-in { animation: scaleIn 0.3s ease-out; }
+        .animate-pulse-gold { animation: pulseGold 2s infinite; }
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes slideUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes pulseGold { 0%, 100% { box-shadow: 0 0 0 0 rgba(212, 168, 83, 0.4); } 50% { box-shadow: 0 0 0 10px rgba(212, 168, 83, 0); } }
+        .loading-dots span { animation: loadingDot 1.4s infinite; }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes loadingDot { 0%, 80%, 100% { opacity: 0; } 40% { opacity: 1; } }
+    </style>
+</head>
+<body class="min-h-screen text-white">
+    <div class="fixed inset-0 opacity-5 pointer-events-none">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="pattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                <path d="M30 5 L35 25 L55 30 L35 35 L30 55 L25 35 L5 30 L25 25 Z" fill="#d4a853"/>
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#pattern)"/>
+        </svg>
+    </div>
+    <div class="relative z-10 container mx-auto px-4 py-8 max-w-4xl">
+        <div id="statusBar" class="flex justify-between items-center mb-6 animate-fade-in">
+            <div id="creditsDisplay" class="bg-royal-navy-light/80 backdrop-blur px-4 py-2 rounded-full border border-royal-gold/30 flex items-center gap-2">
+                <i data-lucide="coins" class="w-5 h-5 text-royal-gold"></i>
+                <span class="text-sm font-medium">קרדיטים: <span id="creditsCount" class="text-royal-gold">4/4</span></span>
+            </div>
+            <div id="authButtons" class="flex gap-2">
+                <button id="loginBtn" onclick="showAuthModal()" class="bg-royal-gold hover:bg-royal-gold-light text-royal-navy px-4 py-2 rounded-full text-sm font-semibold transition-all flex items-center gap-2">
+                    <i data-lucide="crown" class="w-4 h-4"></i>
+                    התחברות פרימיום
+                </button>
+            </div>
+            <div id="premiumBadge" class="hidden bg-gradient-to-r from-royal-gold to-royal-gold-light text-royal-navy px-4 py-2 rounded-full flex items-center gap-2">
+                <i data-lucide="crown" class="w-5 h-5"></i>
+                <span class="font-bold premium-glow">משתמש פרימיום 👑</span>
+                <button onclick="handleSignOut()" class="mr-2 hover:text-royal-red transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+        <header class="text-center mb-10 animate-slide-down">
+            <div class="relative w-32 h-32 mx-auto mb-4">
+                <div class="absolute inset-0 bg-gradient-to-br from-royal-gold to-royal-gold-dark rounded-full animate-pulse-gold"></div>
+                <div class="absolute inset-1 bg-royal-navy rounded-full flex items-center justify-center overflow-hidden">
+                    <svg class="w-20 h-20 text-royal-gold" viewBox="0 0 100 100" fill="currentColor">
+                        <path d="M50 10 L60 35 H90 L65 52 L75 80 L50 62 L25 80 L35 52 L10 35 H40 Z"/>
+                        <circle cx="50" cy="55" r="20" fill="currentColor"/>
+                        <path d="M30 85 Q50 95 70 85 L75 100 H25 Z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2">
+                    <div class="wax-seal">
+                        <i data-lucide="scale" class="w-6 h-6 text-white"></i>
+                    </div>
+                </div>
+            </div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold text-royal-gold mb-2 drop-shadow-lg">בית הדין לקטנוניות</h1>
+            <p class="text-lg text-royal-cream/80 font-light tracking-wide">The Royal Court of Pettiness</p>
+            <div class="flex items-center justify-center gap-4 mt-4 text-royal-gold/60">
+                <div class="h-px w-20 bg-gradient-to-r from-transparent to-royal-gold/60"></div>
+                <i data-lucide="gavel" class="w-5 h-5"></i>
+                <div class="h-px w-20 bg-gradient-to-l from-transparent to-royal-gold/60"></div>
+            </div>
+            <p class="mt-4 text-royal-cream/60 text-sm max-w-md mx-auto">הגישו את הטענות שלכם בפני השופט המלכותי וקבלו פסק דין סרקסטי, ציון קטנוניות והעונש הראוי!</p>
+        </header>
+        <main id="mainCard" class="paper-bg royal-border rounded-2xl p-8 mb-8 relative animate-scale-in">
+            <div class="corner-decoration corner-tl"></div>
+            <div class="corner-decoration corner-tr"></div>
+            <div class="corner-decoration corner-bl"></div>
+            <div class="corner-decoration corner-br"></div>
+            <form id="verdictForm" class="space-y-6 relative z-10">
+                <div>
+                    <label class="block font-serif text-royal-navy text-lg font-semibold mb-3 flex items-center gap-2">
+                        <i data-lucide="users" class="w-5 h-5 text-royal-gold-dark"></i>
+                        הקשר הסכסוך
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <label class="cursor-pointer"><input type="radio" name="context" value="couple" class="hidden peer"><div class="peer-checked:bg-royal-navy peer-checked:text-royal-gold peer-checked:border-royal-gold bg-white border-2 border-royal-navy/20 rounded-xl p-3 text-center transition-all hover:border-royal-gold/50"><i data-lucide="heart" class="w-6 h-6 mx-auto mb-1"></i><span class="text-sm font-medium">זוג</span></div></label>
+                        <label class="cursor-pointer"><input type="radio" name="context" value="roommates" class="hidden peer"><div class="peer-checked:bg-royal-navy peer-checked:text-royal-gold peer-checked:border-royal-gold bg-white border-2 border-royal-navy/20 rounded-xl p-3 text-center transition-all hover:border-royal-gold/50"><i data-lucide="home" class="w-6 h-6 mx-auto mb-1"></i><span class="text-sm font-medium">שותפים לדירה</span></div></label>
+                        <label class="cursor-pointer"><input type="radio" name="context" value="family" class="hidden peer"><div class="peer-checked:bg-royal-navy peer-checked:text-royal-gold peer-checked:border-royal-gold bg-white border-2 border-royal-navy/20 rounded-xl p-3 text-center transition-all hover:border-royal-gold/50"><i data-lucide="users" class="w-6 h-6 mx-auto mb-1"></i><span class="text-sm font-medium">משפחה</span></div></label>
+                        <label class="cursor-pointer"><input type="radio" name="context" value="work" class="hidden peer" checked><div class="peer-checked:bg-royal-navy peer-checked:text-royal-gold peer-checked:border-royal-gold bg-white border-2 border-royal-navy/20 rounded-xl p-3 text-center transition-all hover:border-royal-gold/50"><i data-lucide="briefcase" class="w-6 h-6 mx-auto mb-1"></i><span class="text-sm font-medium">עבודה</span></div></label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-serif text-royal-navy text-lg font-semibold mb-2 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-royal-navy text-royal-gold rounded-full flex items-center justify-center text-sm font-bold">א</span>
+                        טענת צד א׳
+                    </label>
+                    <textarea id="sideA" name="sideA" rows="3" placeholder="תארו את הטענה של צד א׳..." class="royal-input w-full p-4 bg-white border-2 border-royal-navy/20 rounded-xl text-royal-navy resize-none transition-all" required></textarea>
+                </div>
+                <div>
+                    <label class="block font-serif text-royal-navy text-lg font-semibold mb-2 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-royal-gold text-royal-navy rounded-full flex items-center justify-center text-sm font-bold">ב</span>
+                        טענת צד ב׳
+                    </label>
+                    <textarea id="sideB" name="sideB" rows="3" placeholder="תארו את הטענה של צד ב׳..." class="royal-input w-full p-4 bg-white border-2 border-royal-navy/20 rounded-xl text-royal-navy resize-none transition-all" required></textarea>
+                </div>
+                <button type="submit" id="submitBtn" class="royal-btn w-full bg-gradient-to-r from-royal-navy to-royal-navy-light text-royal-gold py-4 rounded-xl font-serif text-xl font-bold flex items-center justify-center gap-3 border-2 border-royal-gold">
+                    <i data-lucide="gavel" class="w-6 h-6"></i>
+                    בקשו פסק דין!
+                </button>
+            </form>
+            <div id="loadingState" class="hidden absolute inset-0 bg-royal-cream/95 rounded-2xl flex flex-col items-center justify-center z-20">
+                <div class="relative">
+                    <div class="w-20 h-20 border-4 border-royal-gold/30 border-t-royal-gold rounded-full animate-spin"></div>
+                    <i data-lucide="scale" class="w-8 h-8 text-royal-gold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></i>
+                </div>
+                <p class="mt-6 font-serif text-royal-navy text-xl">השופט מתלבט...</p>
+                <p class="text-royal-navy/60 loading-dots"><span>.</span><span>.</span><span>.</span></p>
+            </div>
+        </main>
+        <div id="resultCard" class="hidden animate-slide-up">
+            <div id="resultContent" class="paper-bg royal-border rounded-2xl p-8 relative overflow-hidden">
+                <div class="corner-decoration corner-tl"></div>
+                <div class="corner-decoration corner-tr"></div>
+                <div class="corner-decoration corner-bl"></div>
+                <div class="corner-decoration corner-br"></div>
+                <div id="verdictStamp" class="verdict-stamp"><span>פסק דין<br>רשמי</span></div>
+                <div class="text-center mb-6 pt-8">
+                    <div class="flex items-center justify-center gap-2 text-royal-gold-dark mb-2">
+                        <div class="h-px w-16 bg-royal-gold-dark/50"></div>
+                        <i data-lucide="scroll" class="w-5 h-5"></i>
+                        <div class="h-px w-16 bg-royal-gold-dark/50"></div>
+                    </div>
+                    <h2 class="font-serif text-3xl font-bold text-royal-navy">פסק דין מלכותי</h2>
+                    <p class="text-royal-navy/50 text-sm mt-1">Royal Verdict</p>
+                </div>
+                <div class="flex flex-col items-center mb-8">
+                    <p class="font-serif text-royal-navy font-semibold mb-2">מד הקטנוניות</p>
+                    <div class="gauge-container">
+                        <div class="gauge-bg"></div>
+                        <div id="gaugeNeedle" class="gauge-needle"></div>
+                        <div class="gauge-center">
+                            <span id="scoreValue" class="font-serif text-3xl font-bold text-royal-navy">0</span>
+                            <span class="text-xs text-royal-navy/60">מתוך 100</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between w-full max-w-[180px] text-xs text-royal-navy/60 mt-1">
+                        <span>סביר</span>
+                        <span>קטנוני!</span>
+                    </div>
+                </div>
+                <div id="winnerBanner" class="bg-gradient-to-r from-royal-gold/20 via-royal-gold/30 to-royal-gold/20 border-y-2 border-royal-gold/50 py-4 px-6 mb-6 text-center">
+                    <p class="text-sm text-royal-navy/60 mb-1">הצד הצודק:</p>
+                    <p id="winnerText" class="font-serif text-2xl font-bold text-royal-navy"></p>
+                </div>
+                <div class="bg-white/50 rounded-xl p-6 mb-6 border border-royal-navy/10">
+                    <h3 class="font-serif text-lg font-semibold text-royal-navy mb-3 flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-5 h-5 text-royal-gold-dark"></i>
+                        נימוקי פסק הדין
+                    </h3>
+                    <p id="verdictText" class="text-royal-navy leading-relaxed"></p>
+                </div>
+                <div class="bg-royal-red/10 rounded-xl p-6 border border-royal-red/30">
+                    <h3 class="font-serif text-lg font-semibold text-royal-red mb-3 flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                        העונש שנגזר
+                    </h3>
+                    <p id="punishmentText" class="text-royal-navy leading-relaxed"></p>
+                </div>
+                <div class="mt-8 text-center">
+                    <div class="flex items-center justify-center gap-4 mb-4">
+                        <div class="h-px w-20 bg-royal-navy/20"></div>
+                        <div class="wax-seal w-12 h-12"><i data-lucide="stamp" class="w-5 h-5 text-white"></i></div>
+                        <div class="h-px w-20 bg-royal-navy/20"></div>
+                    </div>
+                    <p class="text-royal-navy/40 text-xs">חתום ומאושר על ידי בית הדין לקטנוניות</p>
+                    <p id="verdictDate" class="text-royal-navy/40 text-xs mt-1"></p>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                <button onclick="downloadAsImage()" class="royal-btn flex-1 bg-royal-navy text-royal-gold py-3 rounded-xl font-semibold flex items-center justify-center gap-2 border border-royal-gold">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    הורדה כתמונה
+                </button>
+                <button onclick="shareToWhatsApp()" class="royal-btn flex-1 bg-green-600 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    שיתוף בוואטסאפ
+                </button>
+                <button onclick="newVerdict()" class="royal-btn flex-1 bg-royal-gold text-royal-navy py-3 rounded-xl font-semibold flex items-center justify-center gap-2">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                    סכסוך חדש
+                </button>
+            </div>
+        </div>
+        <footer class="text-center mt-12 text-royal-cream/40 text-sm">
+            <p>בית הדין לקטנוניות © כל הזכויות שמורות לשום דבר בפרט</p>
+            <p class="mt-1 text-xs">פסקי הדין הם לצורך בידור בלבד ואינם מהווים ייעוץ משפטי אמיתי (ברור)</p>
+        </footer>
+    </div>
+    <div id="authModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black/50">
+        <div class="paper-bg rounded-2xl p-8 max-w-md w-full royal-border animate-scale-in relative">
+            <button onclick="closeAuthModal()" class="absolute top-4 left-4 text-royal-navy/50 hover:text-royal-navy transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-royal-gold to-royal-gold-dark rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="crown" class="w-8 h-8 text-royal-navy"></i></div>
+                <h2 class="font-serif text-2xl font-bold text-royal-navy">הצטרפו לאצולה</h2>
+                <p class="text-royal-navy/60 text-sm mt-2">התחברו לחשבון פרימיום לשימוש ללא הגבלה</p>
+            </div>
+            <div class="flex mb-6 bg-royal-navy/10 rounded-lg p-1">
+                <button onclick="switchAuthTab('login')" id="loginTab" class="flex-1 py-2 rounded-md font-semibold text-sm transition-all bg-white text-royal-navy shadow">התחברות</button>
+                <button onclick="switchAuthTab('register')" id="registerTab" class="flex-1 py-2 rounded-md font-semibold text-sm transition-all text-royal-navy/60">הרשמה</button>
+            </div>
+            <button onclick="signInWithGoogle()" class="w-full bg-white border-2 border-royal-navy/20 rounded-xl py-3 font-semibold text-royal-navy flex items-center justify-center gap-3 hover:border-royal-gold transition-all mb-4">
+                <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                המשך עם Google
+            </button>
+            <div class="flex items-center gap-4 my-4"><div class="h-px flex-1 bg-royal-navy/20"></div><span class="text-royal-navy/40 text-sm">או</span><div class="h-px flex-1 bg-royal-navy/20"></div></div>
+            <form id="emailAuthForm" onsubmit="handleEmailAuth(event)" class="space-y-4">
+                <input type="email" id="authEmail" placeholder="אימייל" class="royal-input w-full p-3 bg-white border-2 border-royal-navy/20 rounded-xl text-royal-navy" required>
+                <input type="password" id="authPassword" placeholder="סיסמה" class="royal-input w-full p-3 bg-white border-2 border-royal-navy/20 rounded-xl text-royal-navy" required minlength="6">
+                <button type="submit" class="w-full bg-royal-navy text-royal-gold py-3 rounded-xl font-semibold flex items-center justify-center gap-2"><span id="authSubmitText">התחברות</span><i data-lucide="arrow-left" class="w-4 h-4"></i></button>
+            </form>
+            <p id="authError" class="hidden mt-4 text-center text-red-600 text-sm"></p>
+        </div>
+    </div>
+    <div id="upgradeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black/50">
+        <div class="paper-bg rounded-2xl p-8 max-w-md w-full royal-border animate-scale-in relative overflow-hidden">
+            <button onclick="closeUpgradeModal()" class="absolute top-4 left-4 text-royal-navy/50 hover:text-royal-navy transition-colors z-10"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="relative z-10 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-royal-gold to-royal-gold-dark rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"><i data-lucide="crown" class="w-12 h-12 text-royal-navy"></i></div>
+                <h2 class="font-serif text-3xl font-bold text-royal-navy mb-2">!נגמרו הקרדיטים</h2>
+                <p class="text-royal-navy/60 mb-6">השתמשת ב-4 פסקי הדין החינמיים שלך</p>
+                <div class="bg-royal-gold/20 rounded-xl p-4 mb-6">
+                    <p class="font-semibold text-royal-navy mb-2">משתמשים פרימיום נהנים מ:</p>
+                    <ul class="text-royal-navy/80 text-sm space-y-2">
+                        <li class="flex items-center gap-2 justify-center"><i data-lucide="check" class="w-4 h-4 text-royal-green"></i>פסקי דין ללא הגבלה</li>
+                        <li class="flex items-center gap-2 justify-center"><i data-lucide="check" class="w-4 h-4 text-royal-green"></i>גישה לכל סוגי הסכסוכים</li>
+                        <li class="flex items-center gap-2 justify-center"><i data-lucide="check" class="w-4 h-4 text-royal-green"></i>תמיכה מלכותית 24/7</li>
+                    </ul>
+                </div>
+                <button onclick="closeUpgradeModal(); showAuthModal();" class="w-full bg-gradient-to-r from-royal-gold to-royal-gold-light text-royal-navy py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all"><i data-lucide="crown" class="w-5 h-5"></i>הרשמו עכשיו - חינם!</button>
+                <p class="mt-4 text-royal-navy/40 text-xs">ההרשמה חינמית לחלוטין ומעניקה גישה בלתי מוגבלת</p>
+            </div>
+        </div>
+    </div>
+    <div id="errorModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black/50">
+        <div class="paper-bg rounded-2xl p-8 max-w-md w-full royal-border animate-scale-in">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="alert-circle" class="w-8 h-8 text-red-600"></i></div>
+                <h2 class="font-serif text-2xl font-bold text-royal-navy mb-2">אופס! משהו השתבש</h2>
+                <p id="errorMessage" class="text-royal-navy/60 mb-6">אירעה שגיאה בעת עיבוד הבקשה</p>
+                <button onclick="closeErrorModal()" class="bg-royal-navy text-royal-gold px-8 py-3 rounded-xl font-semibold">הבנתי</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const GEMINI_API_KEY = 'AIzaSyAzks62M8qyLefTZ2ovuPGmItfP26GcLIk';
+        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+        let currentUser = null;
+        let userCredits = 4;
+        let isPremium = false;
+        let isAuthTabLogin = true;
+        let lastVerdict = null;
+        const contextLabels = { couple: 'זוג', roommates: 'שותפים לדירה', family: 'משפחה', work: 'עבודה' };
+        window.addEventListener('firebase-ready', initializeApp);
+        function initializeApp() {
+            lucide.createIcons();
+            firebaseOnAuthStateChanged(firebaseAuth, handleAuthStateChange);
+        }
+        async function handleAuthStateChange(user) {
+            currentUser = user;
+            if (user) {
+                isPremium = !user.isAnonymous;
+                if (isPremium) { showPremiumUI(); } else { await checkUsageLimits(user.uid); showFreeUI(); }
+            } else {
+                try { await firebaseSignInAnonymously(firebaseAuth); } catch (error) { console.error('Anonymous sign-in error:', error); showError('שגיאה בהתחברות אנונימית'); }
+            }
+        }
+        async function checkUsageLimits(uid) {
+            try {
+                const userLimitRef = firebaseDoc(firebaseDb, 'user_limits', uid);
+                const docSnap = await firebaseGetDoc(userLimitRef);
+                if (docSnap.exists()) { userCredits = 4 - (docSnap.data().count || 0); if (userCredits < 0) userCredits = 0; } else { await firebaseSetDoc(userLimitRef, { count: 0 }); userCredits = 4; }
+                updateCreditsDisplay();
+            } catch (error) { console.error('Error checking usage limits:', error); userCredits = 4; updateCreditsDisplay(); }
+        }
+        async function incrementUsage(uid) {
+            try {
+                const userLimitRef = firebaseDoc(firebaseDb, 'user_limits', uid);
+                await firebaseUpdateDoc(userLimitRef, { count: firebaseIncrement(1) });
+                userCredits--;
+                updateCreditsDisplay();
+            } catch (error) { console.error('Error incrementing usage:', error); }
+        }
+        function showPremiumUI() { document.getElementById('creditsDisplay').classList.add('hidden'); document.getElementById('authButtons').classList.add('hidden'); document.getElementById('premiumBadge').classList.remove('hidden'); lucide.createIcons(); }
+        function showFreeUI() { document.getElementById('creditsDisplay').classList.remove('hidden'); document.getElementById('authButtons').classList.remove('hidden'); document.getElementById('premiumBadge').classList.add('hidden'); updateCreditsDisplay(); lucide.createIcons(); }
+        function updateCreditsDisplay() { const c = document.getElementById('creditsCount'); c.textContent = `${userCredits}/4`; if (userCredits <= 1) { c.classList.add('text-red-400'); c.classList.remove('text-royal-gold'); } else { c.classList.remove('text-red-400'); c.classList.add('text-royal-gold'); } }
+        document.getElementById('verdictForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!isPremium && userCredits <= 0) { showUpgradeModal(); return; }
+            const formData = new FormData(e.target);
+            const context = formData.get('context');
+            const sideA = formData.get('sideA');
+            const sideB = formData.get('sideB');
+            if (!sideA.trim() || !sideB.trim()) { showError('נא למלא את שני הצדדים של הסכסוך'); return; }
+            showLoading(true);
+            try {
+                const verdict = await getVerdict(context, sideA, sideB);
+                if (!isPremium && currentUser) { await incrementUsage(currentUser.uid); }
+                displayVerdict(verdict);
+            } catch (error) { console.error('Error getting verdict:', error); showError('השופט נתקל בבעיה טכנית. נסו שוב.'); } finally { showLoading(false); }
+        });
+        async function getVerdict(context, sideA, sideB) {
+            const contextHebrew = contextLabels[context] || 'כללי';
+            const prompt = `אתה שופט מלכותי סרקסטי ומצחיק בבית הדין לקטנוניות. תפקידך לשפוט סכסוכים קטנוניים בין אנשים בצורה הומוריסטית.\n\nהקשר הסכסוך: ${contextHebrew}\n\nטענת צד א':\n${sideA}\n\nטענת צד ב':\n${sideB}\n\nעליך להחזיר תשובה בפורמט JSON בלבד (ללא markdown, ללא backticks, רק JSON טהור) עם המבנה הבא:\n{\n    "winner": "צד א" או "צד ב" או "שניהם צודקים" או "שניהם טועים",\n    "pettyScore": מספר בין 0 ל-100 שמייצג כמה קטנוני הסכסוך הזה (100 = קטנוני ביותר),\n    "verdict": "פסק דין סרקסטי ומצחיק בעברית (3-5 משפטים) שמסביר מי צודק ולמה",\n    "punishment": "עונש יצירתי ומצחיק לצד שהפסיד או לשני הצדדים (2-3 משפטים)"\n}\n\nחשוב:\n- היה סרקסטי ומצחיק אבל לא פוגעני\n- התייחס לפרטים הספציפיים מהטענות\n- העונש צריך להיות יצירתי ומתאים לסיטואציה\n- הציון צריך לשקף כמה הסכסוך באמת קטנוני ומגוחך`;
+            const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.9, maxOutputTokens: 1024 } }) });
+            if (!response.ok) { throw new Error('API request failed'); }
+            const data = await response.json();
+            let jsonStr = data.candidates[0].content.parts[0].text.trim();
+            if (jsonStr.startsWith('```')) { jsonStr = jsonStr.replace(/```json?\n?/g, '').replace(/```/g, ''); }
+            return JSON.parse(jsonStr);
+        }
+        function displayVerdict(verdict) {
+            lastVerdict = verdict;
+            document.getElementById('mainCard').classList.add('hidden');
+            document.getElementById('resultCard').classList.remove('hidden');
+            document.getElementById('winnerText').textContent = verdict.winner;
+            document.getElementById('verdictText').textContent = verdict.verdict;
+            document.getElementById('punishmentText').textContent = verdict.punishment;
+            document.getElementById('verdictDate').textContent = new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            setTimeout(() => { animateGauge(verdict.pettyScore); }, 300);
+            document.getElementById('verdictStamp').classList.add('show');
+            lucide.createIcons();
+        }
+        function animateGauge(score) {
+            const needle = document.getElementById('gaugeNeedle');
+            const scoreValue = document.getElementById('scoreValue');
+            const rotation = -90 + (score * 1.8);
+            needle.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
+            let currentScore = 0;
+            const duration = 1500;
+            const startTime = Date.now();
+            function updateScore() { const elapsed = Date.now() - startTime; const progress = Math.min(elapsed / duration, 1); const easeOut = 1 - Math.pow(1 - progress, 3); currentScore = Math.round(score * easeOut); scoreValue.textContent = currentScore; if (progress < 1) { requestAnimationFrame(updateScore); } }
+            updateScore();
+        }
+        function showLoading(show) { const l = document.getElementById('loadingState'); const b = document.getElementById('submitBtn'); if (show) { l.classList.remove('hidden'); b.disabled = true; } else { l.classList.add('hidden'); b.disabled = false; } }
+        function newVerdict() { document.getElementById('verdictForm').reset(); document.getElementById('resultCard').classList.add('hidden'); document.getElementById('mainCard').classList.remove('hidden'); document.getElementById('verdictStamp').classList.remove('show'); document.getElementById('gaugeNeedle').style.transform = 'translateX(-50%) rotate(-90deg)'; document.getElementById('scoreValue').textContent = '0'; lastVerdict = null; }
+        async function downloadAsImage() { try { const canvas = await html2canvas(document.getElementById('resultContent'), { backgroundColor: '#f5f0e6', scale: 2, useCORS: true }); const link = document.createElement('a'); link.download = 'פסק-דין-קטנוני.png'; link.href = canvas.toDataURL('image/png'); link.click(); } catch (error) { console.error('Error creating image:', error); showError('שגיאה ביצירת התמונה'); } }
+        function shareToWhatsApp() { if (!lastVerdict) return; const text = `🏛️ *פסק דין מבית הדין לקטנוניות* 🏛️\n\n⚖️ הכרעה: ${lastVerdict.winner}\n📊 ציון קטנוניות: ${lastVerdict.pettyScore}/100\n\n📜 פסק הדין:\n${lastVerdict.verdict}\n\n⚠️ העונש:\n${lastVerdict.punishment}\n\n---\n🔗 שפטו גם אתם: ${window.location.href}`; window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); }
+        function showAuthModal() { document.getElementById('authModal').classList.remove('hidden'); lucide.createIcons(); }
+        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); document.getElementById('authError').classList.add('hidden'); document.getElementById('emailAuthForm').reset(); }
+        function switchAuthTab(tab) { isAuthTabLogin = tab === 'login'; const l = document.getElementById('loginTab'); const r = document.getElementById('registerTab'); const t = document.getElementById('authSubmitText'); if (isAuthTabLogin) { l.classList.add('bg-white', 'text-royal-navy', 'shadow'); l.classList.remove('text-royal-navy/60'); r.classList.remove('bg-white', 'text-royal-navy', 'shadow'); r.classList.add('text-royal-navy/60'); t.textContent = 'התחברות'; } else { r.classList.add('bg-white', 'text-royal-navy', 'shadow'); r.classList.remove('text-royal-navy/60'); l.classList.remove('bg-white', 'text-royal-navy', 'shadow'); l.classList.add('text-royal-navy/60'); t.textContent = 'הרשמה'; } }
+        async function signInWithGoogle() { try { await firebaseSignInWithPopup(firebaseAuth, firebaseGoogleProvider); closeAuthModal(); } catch (error) { console.error('Google sign-in error:', error); showAuthError('שגיאה בהתחברות עם Google'); } }
+        async function handleEmailAuth(e) { e.preventDefault(); const email = document.getElementById('authEmail').value; const password = document.getElementById('authPassword').value; try { if (isAuthTabLogin) { await firebaseSignInWithEmailAndPassword(firebaseAuth, email, password); } else { await firebaseCreateUserWithEmailAndPassword(firebaseAuth, email, password); } closeAuthModal(); } catch (error) { console.error('Email auth error:', error); let msg = 'שגיאה בהתחברות'; switch (error.code) { case 'auth/invalid-email': msg = 'כתובת אימייל לא תקינה'; break; case 'auth/user-not-found': msg = 'משתמש לא נמצא'; break; case 'auth/wrong-password': msg = 'סיסמה שגויה'; break; case 'auth/email-already-in-use': msg = 'האימייל כבר בשימוש'; break; case 'auth/weak-password': msg = 'הסיסמה חלשה מדי'; break; case 'auth/invalid-credential': msg = 'פרטי התחברות שגויים'; break; } showAuthError(msg); } }
+        function showAuthError(message) { const e = document.getElementById('authError'); e.textContent = message; e.classList.remove('hidden'); }
+        async function handleSignOut() { try { await firebaseSignOut(firebaseAuth); } catch (error) { console.error('Sign out error:', error); } }
+        function showUpgradeModal() { document.getElementById('upgradeModal').classList.remove('hidden'); lucide.createIcons(); }
+        function closeUpgradeModal() { document.getElementById('upgradeModal').classList.add('hidden'); }
+        function showError(message) { document.getElementById('errorMessage').textContent = message; document.getElementById('errorModal').classList.remove('hidden'); lucide.createIcons(); }
+        function closeErrorModal() { document.getElementById('errorModal').classList.add('hidden'); }
+        ['authModal', 'upgradeModal', 'errorModal'].forEach(id => { document.getElementById(id).addEventListener('click', (e) => { if (e.target.id === id) { document.getElementById(id).classList.add('hidden'); } }); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeAuthModal(); closeUpgradeModal(); closeErrorModal(); } });
+    </script>
+</body>
+</html>
