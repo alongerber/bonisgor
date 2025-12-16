@@ -28,8 +28,6 @@
 </head>
 <body class="p-4 sm:p-8">
     <div class="max-w-4xl mx-auto bg-white p-6 sm:p-10 rounded-3xl shadow-2xl">
-
-        <!-- סטטוס בר -->
         <div id="statusBar" class="flex justify-between items-center mb-6">
             <div id="creditsDisplay" class="bg-gray-100 px-4 py-2 rounded-full border border-gray-200 flex items-center gap-2">
                 <i data-lucide="coins" class="w-5 h-5 text-amber-600"></i>
@@ -43,14 +41,12 @@
             </div>
             <div id="premiumBadge" class="hidden bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 py-2 rounded-full flex items-center gap-2">
                 <i data-lucide="crown" class="w-5 h-5"></i>
-                <span class="font-bold">משתמש פרימיום 👑</span>
+                <span class="font-bold">משתמש פרימיום</span>
                 <button id="signOutBtn" class="mr-2 hover:text-gray-200 transition-colors">
                     <i data-lucide="log-out" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>
-
-        <!-- כותרת -->
         <div class="flex justify-center mb-4">
             <i data-lucide="scale" class="w-12 h-12 text-[#800000]"></i>
         </div>
@@ -58,8 +54,6 @@
             <h1 class="text-4xl sm:text-5xl font-extrabold text-[#800000] mb-2">בוא נסגור את זה</h1>
             <p class="text-gray-500 text-lg">הבורר המהיר לוויכוחים קטנוניים - הזינו את הסכסוך וקבלו פסק דין מחוצף!</p>
         </header>
-
-        <!-- כרטיס השופט -->
         <div class="mb-8">
             <div class="judge-card p-6 rounded-xl text-center max-w-md w-full mx-auto">
                 <div class="flex justify-center items-center gap-2 mb-3">
@@ -70,8 +64,6 @@
                 <p class="text-sm text-gray-600 italic">(ידוע בכינויו: "פרקליטות הקטנוניות")</p>
             </div>
         </div>
-
-        <!-- בחירת הקשר -->
         <div class="mb-6">
             <label class="block text-lg font-semibold text-gray-700 mb-3 text-center">הקשר הסכסוך:</label>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto" id="contextButtons">
@@ -93,8 +85,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- טענות -->
         <div class="mb-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
@@ -113,16 +103,12 @@
                 </div>
             </div>
         </div>
-
-        <!-- כפתור שליחה -->
         <div class="text-center">
             <button id="judge-button" class="bg-[#800000] hover:bg-[#600000] text-white font-bold py-4 px-10 rounded-full shadow-lg transition duration-300 transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed text-xl">
                 <i data-lucide="gavel" class="w-6 h-6 inline-block ml-2"></i>
                 קבלו פסק דין!
             </button>
         </div>
-
-        <!-- טעינה -->
         <div id="loading-area" class="mt-6 text-center hidden">
             <div class="inline-flex items-center gap-3 bg-amber-50 px-6 py-3 rounded-full border border-amber-200">
                 <svg class="animate-spin h-6 w-6 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -132,15 +118,11 @@
                 <span class="text-amber-700 font-semibold">השופט מתלבט...</span>
             </div>
         </div>
-
-        <!-- פלט פסק הדין -->
         <div id="verdict-output" class="mt-10 hidden bg-white border border-gray-200 rounded-2xl p-8 shadow-lg">
             <div class="text-center mb-8">
                 <i data-lucide="shield-check" class="w-12 h-12 text-[#800000] mx-auto mb-2"></i>
                 <h3 class="text-3xl font-extrabold text-gray-900">פסק דין מכריע - רשמי</h3>
             </div>
-
-            <!-- מד קטנוניות -->
             <div class="flex flex-col items-center mb-8">
                 <p class="font-semibold text-gray-700 mb-2">מד הקטנוניות</p>
                 <div class="gauge-container">
@@ -156,14 +138,10 @@
                     <span>קטנוני!</span>
                 </div>
             </div>
-
-            <!-- מנצח -->
             <div class="bg-amber-50 border-2 border-amber-200 py-4 px-6 mb-6 text-center rounded-xl">
                 <p class="text-sm text-gray-600 mb-1">הצד הצודק:</p>
                 <p id="winnerText" class="text-2xl font-bold text-[#800000]"></p>
             </div>
-
-            <!-- פסק דין -->
             <div class="bg-gray-50 rounded-xl p-6 mb-6 border border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
                     <i data-lucide="file-text" class="w-5 h-5 text-[#800000]"></i>
@@ -171,8 +149,6 @@
                 </h3>
                 <p id="verdictText" class="text-gray-700 leading-relaxed"></p>
             </div>
-
-            <!-- עונש -->
             <div class="bg-red-50 rounded-xl p-6 border border-red-200">
                 <h3 class="text-lg font-semibold text-red-700 mb-3 flex items-center gap-2">
                     <i data-lucide="alert-triangle" class="w-5 h-5"></i>
@@ -180,13 +156,9 @@
                 </h3>
                 <p id="punishmentText" class="text-gray-700 leading-relaxed"></p>
             </div>
-
-            <!-- תאריך -->
             <div class="mt-6 pt-4 border-t border-gray-200 text-sm text-gray-500 text-center">
                 תאריך ההכרעה: <span id="verdict-date"></span>
             </div>
-
-            <!-- כפתורי שיתוף -->
             <div class="flex flex-col sm:flex-row gap-3 mt-6">
                 <button id="downloadBtn" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition border border-gray-300">
                     <i data-lucide="download" class="w-5 h-5"></i>
@@ -201,14 +173,10 @@
                 </button>
             </div>
         </div>
-
-        <!-- פוטר -->
         <footer class="text-center mt-12 text-gray-400 text-sm">
             <p>בוא נסגור את זה © פסקי הדין הם לצורך בידור בלבד</p>
         </footer>
     </div>
-
-    <!-- מודל התחברות -->
     <div id="authModal" class="hidden fixed inset-0 modal-overlay flex items-center justify-center z-50 p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full">
             <div class="flex justify-between items-center mb-6">
@@ -216,19 +184,15 @@
                 <button id="closeAuthBtn" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
             </div>
             <p class="text-gray-500 text-sm mb-6 text-center">התחברו לחשבון פרימיום לשימוש ללא הגבלה</p>
-
             <div class="flex mb-6 bg-gray-100 rounded-lg p-1">
                 <button id="loginTab" class="flex-1 py-2 rounded-md font-semibold text-sm bg-white text-gray-900 shadow">התחברות</button>
                 <button id="registerTab" class="flex-1 py-2 rounded-md font-semibold text-sm text-gray-500">הרשמה</button>
             </div>
-
             <button id="googleSignInBtn" class="w-full bg-white border-2 border-gray-200 rounded-xl py-3 font-semibold text-gray-700 flex items-center justify-center gap-3 hover:border-amber-500 transition-all mb-4">
                 <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                 המשך עם Google
             </button>
-
             <div class="flex items-center gap-4 my-4"><div class="h-px flex-1 bg-gray-200"></div><span class="text-gray-400 text-sm">או</span><div class="h-px flex-1 bg-gray-200"></div></div>
-
             <form id="emailAuthForm" class="space-y-4">
                 <input type="email" id="authEmail" placeholder="אימייל" class="input-field w-full p-3 text-gray-800" required>
                 <input type="password" id="authPassword" placeholder="סיסמה" class="input-field w-full p-3 text-gray-800" required minlength="6">
@@ -237,8 +201,6 @@
             <p id="authError" class="hidden mt-4 text-center text-red-600 text-sm"></p>
         </div>
     </div>
-
-    <!-- מודל שדרוג -->
     <div id="upgradeModal" class="hidden fixed inset-0 modal-overlay flex items-center justify-center z-50 p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full text-center">
             <button id="closeUpgradeBtn" class="float-left text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
@@ -252,8 +214,6 @@
             </div>
         </div>
     </div>
-
-    <!-- מודל שגיאה -->
     <div id="errorModal" class="hidden fixed inset-0 modal-overlay flex items-center justify-center z-50 p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full text-center">
             <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -264,13 +224,10 @@
             <button id="closeErrorBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 py-3 rounded-xl font-semibold">הבנתי</button>
         </div>
     </div>
-
-    <!-- Firebase -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
         import { getAuth, signInAnonymously, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
         import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
-
         const firebaseConfig = {
             apiKey: "AIzaSyDRR-PMlAz_hVzLQJ4jl37F3QDa_pxS830",
             authDomain: "royal-court-pettiness.firebaseapp.com",
@@ -279,7 +236,6 @@
             messagingSenderId: "570213664438",
             appId: "1:570213664438:web:79a460121596a491c2c817"
         };
-
         const app = initializeApp(firebaseConfig);
         window.firebaseAuth = getAuth(app);
         window.firebaseDb = getFirestore(app);
@@ -295,349 +251,73 @@
         window.firebaseSetDoc = setDoc;
         window.firebaseUpdateDoc = updateDoc;
         window.firebaseIncrement = increment;
-
         window.dispatchEvent(new Event('firebase-ready'));
     </script>
-
     <script>
-        // Gemini API
-        var GEMINI_API_KEY = 'AIzaSyAzks62M8qyLefTZ2ovuPGmItfP26GcLIk';
-// אופציה ב' - המודל היציב הכי חזק (Pro)
-// השתמש בגרסה היציבה שעובדת בוודאות
-var GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';        // State
-        var currentUser = null;
-        var userCredits = 4;
-        var isPremium = false;
-        var isAuthTabLogin = true;
-        var lastVerdict = null;
-        var selectedContext = 'work';
-
+        var currentUser = null, userCredits = 4, isPremium = false, isAuthTabLogin = true, lastVerdict = null, selectedContext = 'work';
         var contextLabels = { couple: 'זוג', roommates: 'שותפים לדירה', family: 'משפחה', work: 'עבודה' };
-
-        // Wait for DOM
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-            setupEventListeners();
-        });
-
-        // Wait for Firebase
-        window.addEventListener('firebase-ready', function() {
-            firebaseOnAuthStateChanged(firebaseAuth, handleAuthStateChange);
-        });
-
+        document.addEventListener('DOMContentLoaded', function() { lucide.createIcons(); setupEventListeners(); });
+        window.addEventListener('firebase-ready', function() { firebaseOnAuthStateChanged(firebaseAuth, handleAuthStateChange); });
         function setupEventListeners() {
-            // Context buttons
-            var contextBtns = document.querySelectorAll('.context-btn');
-            contextBtns.forEach(function(btn) {
+            document.querySelectorAll('.context-btn').forEach(function(btn) {
                 btn.addEventListener('click', function() {
-                    contextBtns.forEach(function(b) { b.classList.remove('selected'); });
+                    document.querySelectorAll('.context-btn').forEach(function(b) { b.classList.remove('selected'); });
                     btn.classList.add('selected');
                     selectedContext = btn.getAttribute('data-context');
                     lucide.createIcons();
                 });
             });
-
-            // Judge button
             document.getElementById('judge-button').addEventListener('click', handleJudgeClick);
-
-            // Auth modal
-            document.getElementById('loginBtn').addEventListener('click', function() {
-                document.getElementById('authModal').classList.remove('hidden');
-                lucide.createIcons();
-            });
-            document.getElementById('closeAuthBtn').addEventListener('click', function() {
-                document.getElementById('authModal').classList.add('hidden');
-            });
-
-            // Auth tabs
-            document.getElementById('loginTab').addEventListener('click', function() {
-                isAuthTabLogin = true;
-                document.getElementById('loginTab').className = 'flex-1 py-2 rounded-md font-semibold text-sm bg-white text-gray-900 shadow';
-                document.getElementById('registerTab').className = 'flex-1 py-2 rounded-md font-semibold text-sm text-gray-500';
-                document.getElementById('authSubmitText').textContent = 'התחברות';
-            });
-            document.getElementById('registerTab').addEventListener('click', function() {
-                isAuthTabLogin = false;
-                document.getElementById('registerTab').className = 'flex-1 py-2 rounded-md font-semibold text-sm bg-white text-gray-900 shadow';
-                document.getElementById('loginTab').className = 'flex-1 py-2 rounded-md font-semibold text-sm text-gray-500';
-                document.getElementById('authSubmitText').textContent = 'הרשמה';
-            });
-
-            // Google sign in
-            document.getElementById('googleSignInBtn').addEventListener('click', async function() {
-                try {
-                    await firebaseSignInWithPopup(firebaseAuth, firebaseGoogleProvider);
-                    document.getElementById('authModal').classList.add('hidden');
-                } catch (e) {
-                    document.getElementById('authError').textContent = 'שגיאה בהתחברות';
-                    document.getElementById('authError').classList.remove('hidden');
-                }
-            });
-
-            // Email auth form
-            document.getElementById('emailAuthForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                var email = document.getElementById('authEmail').value;
-                var pass = document.getElementById('authPassword').value;
-                try {
-                    if (isAuthTabLogin) {
-                        await firebaseSignInWithEmailAndPassword(firebaseAuth, email, pass);
-                    } else {
-                        await firebaseCreateUserWithEmailAndPassword(firebaseAuth, email, pass);
-                    }
-                    document.getElementById('authModal').classList.add('hidden');
-                } catch (err) {
-                    var msg = 'שגיאה';
-                    if (err.code === 'auth/invalid-email') msg = 'אימייל לא תקין';
-                    if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') msg = 'סיסמה שגויה';
-                    if (err.code === 'auth/email-already-in-use') msg = 'אימייל בשימוש';
-                    if (err.code === 'auth/user-not-found') msg = 'משתמש לא נמצא';
-                    document.getElementById('authError').textContent = msg;
-                    document.getElementById('authError').classList.remove('hidden');
-                }
-            });
-
-            // Sign out
-            document.getElementById('signOutBtn').addEventListener('click', async function() {
-                try { await firebaseSignOut(firebaseAuth); } catch (e) {}
-            });
-
-            // Upgrade modal
-            document.getElementById('closeUpgradeBtn').addEventListener('click', function() {
-                document.getElementById('upgradeModal').classList.add('hidden');
-            });
-            document.getElementById('upgradeToAuthBtn').addEventListener('click', function() {
-                document.getElementById('upgradeModal').classList.add('hidden');
-                document.getElementById('authModal').classList.remove('hidden');
-                lucide.createIcons();
-            });
-
-            // Error modal
-            document.getElementById('closeErrorBtn').addEventListener('click', function() {
-                document.getElementById('errorModal').classList.add('hidden');
-            });
-
-            // Share buttons
+            document.getElementById('loginBtn').addEventListener('click', function() { document.getElementById('authModal').classList.remove('hidden'); lucide.createIcons(); });
+            document.getElementById('closeAuthBtn').addEventListener('click', function() { document.getElementById('authModal').classList.add('hidden'); });
+            document.getElementById('loginTab').addEventListener('click', function() { isAuthTabLogin = true; document.getElementById('loginTab').className = 'flex-1 py-2 rounded-md font-semibold text-sm bg-white text-gray-900 shadow'; document.getElementById('registerTab').className = 'flex-1 py-2 rounded-md font-semibold text-sm text-gray-500'; document.getElementById('authSubmitText').textContent = 'התחברות'; });
+            document.getElementById('registerTab').addEventListener('click', function() { isAuthTabLogin = false; document.getElementById('registerTab').className = 'flex-1 py-2 rounded-md font-semibold text-sm bg-white text-gray-900 shadow'; document.getElementById('loginTab').className = 'flex-1 py-2 rounded-md font-semibold text-sm text-gray-500'; document.getElementById('authSubmitText').textContent = 'הרשמה'; });
+            document.getElementById('googleSignInBtn').addEventListener('click', async function() { try { await firebaseSignInWithPopup(firebaseAuth, firebaseGoogleProvider); document.getElementById('authModal').classList.add('hidden'); } catch (e) { document.getElementById('authError').textContent = 'שגיאה בהתחברות'; document.getElementById('authError').classList.remove('hidden'); } });
+            document.getElementById('emailAuthForm').addEventListener('submit', async function(e) { e.preventDefault(); var email = document.getElementById('authEmail').value, pass = document.getElementById('authPassword').value; try { if (isAuthTabLogin) await firebaseSignInWithEmailAndPassword(firebaseAuth, email, pass); else await firebaseCreateUserWithEmailAndPassword(firebaseAuth, email, pass); document.getElementById('authModal').classList.add('hidden'); } catch (err) { var msg = 'שגיאה'; if (err.code === 'auth/invalid-email') msg = 'אימייל לא תקין'; if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') msg = 'סיסמה שגויה'; if (err.code === 'auth/email-already-in-use') msg = 'אימייל בשימוש'; if (err.code === 'auth/user-not-found') msg = 'משתמש לא נמצא'; document.getElementById('authError').textContent = msg; document.getElementById('authError').classList.remove('hidden'); } });
+            document.getElementById('signOutBtn').addEventListener('click', async function() { try { await firebaseSignOut(firebaseAuth); } catch (e) {} });
+            document.getElementById('closeUpgradeBtn').addEventListener('click', function() { document.getElementById('upgradeModal').classList.add('hidden'); });
+            document.getElementById('upgradeToAuthBtn').addEventListener('click', function() { document.getElementById('upgradeModal').classList.add('hidden'); document.getElementById('authModal').classList.remove('hidden'); lucide.createIcons(); });
+            document.getElementById('closeErrorBtn').addEventListener('click', function() { document.getElementById('errorModal').classList.add('hidden'); });
             document.getElementById('downloadBtn').addEventListener('click', downloadAsImage);
             document.getElementById('whatsappBtn').addEventListener('click', shareToWhatsApp);
             document.getElementById('newVerdictBtn').addEventListener('click', newVerdict);
-
-            // Close modals on backdrop click
-            document.getElementById('authModal').addEventListener('click', function(e) {
-                if (e.target === this) this.classList.add('hidden');
-            });
-            document.getElementById('upgradeModal').addEventListener('click', function(e) {
-                if (e.target === this) this.classList.add('hidden');
-            });
-            document.getElementById('errorModal').addEventListener('click', function(e) {
-                if (e.target === this) this.classList.add('hidden');
-            });
+            ['authModal', 'upgradeModal', 'errorModal'].forEach(function(id) { document.getElementById(id).addEventListener('click', function(e) { if (e.target === this) this.classList.add('hidden'); }); });
         }
-
-        async function handleAuthStateChange(user) {
-            currentUser = user;
-            if (user) {
-                isPremium = !user.isAnonymous;
-                if (isPremium) {
-                    showPremiumUI();
-                } else {
-                    await checkUsageLimits(user.uid);
-                    showFreeUI();
-                }
-            } else {
-                try {
-                    await firebaseSignInAnonymously(firebaseAuth);
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-        }
-
-        async function checkUsageLimits(uid) {
-            try {
-                var ref = firebaseDoc(firebaseDb, 'user_limits', uid);
-                var snap = await firebaseGetDoc(ref);
-                if (snap.exists()) {
-                    userCredits = Math.max(0, 4 - (snap.data().count || 0));
-                } else {
-                    await firebaseSetDoc(ref, { count: 0 });
-                    userCredits = 4;
-                }
-                updateCreditsDisplay();
-            } catch (e) {
-                console.error(e);
-                userCredits = 4;
-                updateCreditsDisplay();
-            }
-        }
-
-        async function incrementUsage(uid) {
-            try {
-                await firebaseUpdateDoc(firebaseDoc(firebaseDb, 'user_limits', uid), { count: firebaseIncrement(1) });
-                userCredits--;
-                updateCreditsDisplay();
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        function showPremiumUI() {
-            document.getElementById('creditsDisplay').classList.add('hidden');
-            document.getElementById('authButtons').classList.add('hidden');
-            document.getElementById('premiumBadge').classList.remove('hidden');
-            lucide.createIcons();
-        }
-
-        function showFreeUI() {
-            document.getElementById('creditsDisplay').classList.remove('hidden');
-            document.getElementById('authButtons').classList.remove('hidden');
-            document.getElementById('premiumBadge').classList.add('hidden');
-            updateCreditsDisplay();
-            lucide.createIcons();
-        }
-
-        function updateCreditsDisplay() {
-            var c = document.getElementById('creditsCount');
-            c.textContent = userCredits + '/4';
-            c.className = userCredits <= 1 ? 'text-red-600 font-bold' : 'text-amber-600 font-bold';
-        }
-
-        function showError(msg) {
-            document.getElementById('errorMessage').textContent = msg;
-            document.getElementById('errorModal').classList.remove('hidden');
-            lucide.createIcons();
-        }
-
+        async function handleAuthStateChange(user) { currentUser = user; if (user) { isPremium = !user.isAnonymous; if (isPremium) showPremiumUI(); else { await checkUsageLimits(user.uid); showFreeUI(); } } else { try { await firebaseSignInAnonymously(firebaseAuth); } catch (e) { console.error(e); } } }
+        async function checkUsageLimits(uid) { try { var ref = firebaseDoc(firebaseDb, 'user_limits', uid); var snap = await firebaseGetDoc(ref); if (snap.exists()) userCredits = Math.max(0, 4 - (snap.data().count || 0)); else { await firebaseSetDoc(ref, { count: 0 }); userCredits = 4; } updateCreditsDisplay(); } catch (e) { console.error(e); userCredits = 4; updateCreditsDisplay(); } }
+        async function incrementUsage(uid) { try { await firebaseUpdateDoc(firebaseDoc(firebaseDb, 'user_limits', uid), { count: firebaseIncrement(1) }); userCredits--; updateCreditsDisplay(); } catch (e) { console.error(e); } }
+        function showPremiumUI() { document.getElementById('creditsDisplay').classList.add('hidden'); document.getElementById('authButtons').classList.add('hidden'); document.getElementById('premiumBadge').classList.remove('hidden'); lucide.createIcons(); }
+        function showFreeUI() { document.getElementById('creditsDisplay').classList.remove('hidden'); document.getElementById('authButtons').classList.remove('hidden'); document.getElementById('premiumBadge').classList.add('hidden'); updateCreditsDisplay(); lucide.createIcons(); }
+        function updateCreditsDisplay() { var c = document.getElementById('creditsCount'); c.textContent = userCredits + '/4'; c.className = userCredits <= 1 ? 'text-red-600 font-bold' : 'text-amber-600 font-bold'; }
+        function showError(msg) { document.getElementById('errorMessage').textContent = msg; document.getElementById('errorModal').classList.remove('hidden'); lucide.createIcons(); }
         async function handleJudgeClick() {
-            if (!isPremium && userCredits <= 0) {
-                document.getElementById('upgradeModal').classList.remove('hidden');
-                lucide.createIcons();
-                return;
-            }
-
-            var sideA = document.getElementById('claim-a').value.trim();
-            var sideB = document.getElementById('claim-b').value.trim();
-
-            if (!sideA || !sideB || sideA.length < 10 || sideB.length < 10) {
-                showError('נא למלא את שני הצדדים (לפחות 10 תווים לכל צד)');
-                return;
-            }
-
+            if (!isPremium && userCredits <= 0) { document.getElementById('upgradeModal').classList.remove('hidden'); lucide.createIcons(); return; }
+            var sideA = document.getElementById('claim-a').value.trim(), sideB = document.getElementById('claim-b').value.trim();
+            if (!sideA || !sideB || sideA.length < 10 || sideB.length < 10) { showError('נא למלא את שני הצדדים (לפחות 10 תווים לכל צד)'); return; }
             document.getElementById('loading-area').classList.remove('hidden');
             document.getElementById('judge-button').disabled = true;
-
             try {
                 var verdict = await getVerdict(selectedContext, sideA, sideB);
-                if (!isPremium && currentUser) {
-                    await incrementUsage(currentUser.uid);
-                }
+                if (!isPremium && currentUser) await incrementUsage(currentUser.uid);
                 displayVerdict(verdict);
-            } catch (e) {
-                console.error(e);
-                showError('השופט נתקל בבעיה טכנית. נסו שוב.');
-            }
-
+            } catch (e) { console.error(e); showError('השופט נתקל בבעיה טכנית. נסו שוב.'); }
             document.getElementById('loading-area').classList.add('hidden');
             document.getElementById('judge-button').disabled = false;
         }
-
         async function getVerdict(context, sideA, sideB) {
-            var contextHebrew = contextLabels[context] || 'כללי';
-
-            var prompt = 'אתה שופט מלכותי סרקסטי ומצחיק בבית הדין לקטנוניות. תפקידך לשפוט סכסוכים קטנוניים בצורה הומוריסטית.\n\n' +
-                'הקשר: ' + contextHebrew + '\n\n' +
-                'צד א טוען: ' + sideA + '\n\n' +
-                'צד ב טוען: ' + sideB + '\n\n' +
-                'החזר תשובה בפורמט JSON בלבד (ללא markdown, ללא backticks, רק JSON טהור):\n' +
-                '{"winner": "צד א" או "צד ב" או "שניהם צודקים" או "שניהם טועים", "pettyScore": מספר 0-100, "verdict": "פסק דין סרקסטי ומצחיק בעברית 3-5 משפטים", "punishment": "עונש יצירתי ומצחיק 2-3 משפטים"}\n\n' +
-                'היה סרקסטי ומצחיק. התייחס לפרטים הספציפיים. העונש צריך להיות יצירתי.';
-
-            var response = await fetch(GEMINI_API_URL + '?key=' + GEMINI_API_KEY, {
+            var response = await fetch('/api/judge', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { temperature: 0.9, maxOutputTokens: 1024 }
-                })
+                body: JSON.stringify({ context: context, sideA: sideA, sideB: sideB })
             });
-
-            if (!response.ok) {
-                throw new Error('API request failed: ' + response.status);
-            }
-
-            var data = await response.json();
-            var txt = data.candidates[0].content.parts[0].text.trim();
-
-            // Remove markdown code blocks if present
-            if (txt.startsWith('```')) {
-                txt = txt.replace(/```json?\n?/g, '').replace(/```/g, '').trim();
-            }
-
-            return JSON.parse(txt);
+            if (!response.ok) throw new Error('API request failed: ' + response.status);
+            return await response.json();
         }
-
-        function displayVerdict(v) {
-            lastVerdict = v;
-            document.getElementById('verdict-output').classList.remove('hidden');
-            document.getElementById('winnerText').textContent = v.winner;
-            document.getElementById('verdictText').textContent = v.verdict;
-            document.getElementById('punishmentText').textContent = v.punishment;
-            document.getElementById('verdict-date').textContent = new Date().toLocaleDateString('he-IL', {
-                year: 'numeric', month: 'long', day: 'numeric'
-            });
-            animateGauge(v.pettyScore);
-            lucide.createIcons();
-            document.getElementById('verdict-output').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function animateGauge(score) {
-            var needle = document.getElementById('gaugeNeedle');
-            var scoreEl = document.getElementById('scoreValue');
-            var rotation = -90 + (score * 1.8);
-            needle.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)';
-
-            var curr = 0;
-            var interval = setInterval(function() {
-                curr++;
-                scoreEl.textContent = curr;
-                if (curr >= score) clearInterval(interval);
-            }, 15);
-        }
-
-        function newVerdict() {
-            document.getElementById('claim-a').value = '';
-            document.getElementById('claim-b').value = '';
-            document.getElementById('verdict-output').classList.add('hidden');
-            document.getElementById('gaugeNeedle').style.transform = 'translateX(-50%) rotate(-90deg)';
-            document.getElementById('scoreValue').textContent = '0';
-            lastVerdict = null;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        async function downloadAsImage() {
-            try {
-                var canvas = await html2canvas(document.getElementById('verdict-output'), {
-                    backgroundColor: '#ffffff',
-                    scale: 2
-                });
-                var link = document.createElement('a');
-                link.download = 'פסק-דין.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            } catch (e) {
-                showError('שגיאה ביצירת תמונה');
-            }
-        }
-
-        function shareToWhatsApp() {
-            if (!lastVerdict) return;
-            var txt = '⚖️ *פסק דין מ"בוא נסגור את זה"*\n\n' +
-                '🏆 הצד הצודק: ' + lastVerdict.winner + '\n' +
-                '📊 ציון קטנוניות: ' + lastVerdict.pettyScore + '/100\n\n' +
-                '📜 ' + lastVerdict.verdict + '\n\n' +
-                '⚠️ העונש: ' + lastVerdict.punishment;
-            window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank');
-        }
+        function displayVerdict(v) { lastVerdict = v; document.getElementById('verdict-output').classList.remove('hidden'); document.getElementById('winnerText').textContent = v.winner; document.getElementById('verdictText').textContent = v.verdict; document.getElementById('punishmentText').textContent = v.punishment; document.getElementById('verdict-date').textContent = new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' }); animateGauge(v.pettyScore); lucide.createIcons(); document.getElementById('verdict-output').scrollIntoView({ behavior: 'smooth' }); }
+        function animateGauge(score) { var needle = document.getElementById('gaugeNeedle'), scoreEl = document.getElementById('scoreValue'), rotation = -90 + (score * 1.8); needle.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)'; var curr = 0; var interval = setInterval(function() { curr++; scoreEl.textContent = curr; if (curr >= score) clearInterval(interval); }, 15); }
+        function newVerdict() { document.getElementById('claim-a').value = ''; document.getElementById('claim-b').value = ''; document.getElementById('verdict-output').classList.add('hidden'); document.getElementById('gaugeNeedle').style.transform = 'translateX(-50%) rotate(-90deg)'; document.getElementById('scoreValue').textContent = '0'; lastVerdict = null; window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        async function downloadAsImage() { try { var canvas = await html2canvas(document.getElementById('verdict-output'), { backgroundColor: '#ffffff', scale: 2 }); var link = document.createElement('a'); link.download = 'פסק-דין.png'; link.href = canvas.toDataURL('image/png'); link.click(); } catch (e) { showError('שגיאה ביצירת תמונה'); } }
+        function shareToWhatsApp() { if (!lastVerdict) return; var txt = '⚖️ *פסק דין מ"בוא נסגור את זה"*\n\n🏆 הצד הצודק: ' + lastVerdict.winner + '\n📊 ציון קטנוניות: ' + lastVerdict.pettyScore + '/100\n\n📜 ' + lastVerdict.verdict + '\n\n⚠️ העונש: ' + lastVerdict.punishment; window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank'); }
     </script>
 </body>
 </html>
